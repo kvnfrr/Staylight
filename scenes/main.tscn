@@ -5,6 +5,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(6, 15)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o5qli"]
+size = Vector2(1000, 20)
+
 [node name="Main" type="Node2D" unique_id=52698365]
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=742452076]
@@ -16,3 +19,11 @@ shape = SubResource("RectangleShape2D_0wfyh")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=652154943]
 texture = ExtResource("1_o5qli")
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=1975046369]
+position = Vector2(475, 264)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=938798499]
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor" unique_id=43845833]
