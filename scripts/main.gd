@@ -30,7 +30,7 @@ var danger_time_limit := 2.0
 var was_in_danger := false
 
 var is_drawing_path := false
-var spirit_start_radius := 16.0
+var spirit_start_radius := 24.0
 
 func _ready() -> void:
 	player_spawn_position = player.global_position
