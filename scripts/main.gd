@@ -4,6 +4,7 @@ enum GameState { DRAWING, RUNNING }
 
 @onready var path_line: Line2D = $PathLine
 @onready var spirit: Area2D = $Spirit
+@onready var player: CharacterBody2D = $Player
 
 var state := GameState.DRAWING
 var path_points: Array[Vector2] = []
@@ -11,6 +12,9 @@ var min_point_distance := 8.0
 
 var spirit_index := 0
 var spirit_speed := 120.0
+
+func _ready() -> void:
+	player.controls_enabled = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if state != GameState.DRAWING:
@@ -47,10 +51,12 @@ func start_run() -> void:
 	state = GameState.RUNNING
 	spirit.global_position = path_points[0]
 	spirit_index = 1
+	player.controls_enabled = true
 
 func move_spirit(delta: float) -> void:
 	if spirit_index >= path_points.size():
 		state = GameState.DRAWING
+		player.controls_enabled = false
 		return
 
 	var target := path_points[spirit_index]
