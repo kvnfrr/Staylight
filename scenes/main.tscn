@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bio11qeri3s7s" path="res://scripts/player.gd" id="1_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://c31xbyhrqexc8" path="res://assets/player.png" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c7xm8d3j5bus1" path="res://scripts/main.gd" id="1_sugp2"]
+[ext_resource type="Texture2D" uid="uid://y68pa7p8jydv" path="res://assets/spirit.png" id="3_sugp2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(18, 45)
@@ -37,3 +38,9 @@ shape = SubResource("RectangleShape2D_o5qli")
 [node name="PathLine" type="Line2D" parent="." unique_id=1432185608]
 width = 4.0
 default_color = Color(0.06666667, 1, 0, 1)
+
+[node name="Spirit" type="Area2D" parent="." unique_id=1662889771]
+position = Vector2(440, 194)
+
+[node name="Sprite2D" type="Sprite2D" parent="Spirit" unique_id=36448746]
+texture = ExtResource("3_sugp2")
