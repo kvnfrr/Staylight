@@ -16,6 +16,9 @@ size = Vector2(320, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tefeu"]
 size = Vector2(48, 51)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
+size = Vector2(106, 20)
+
 [node name="Main" type="Node2D" unique_id=52698365]
 script = ExtResource("1_sugp2")
 
@@ -32,12 +35,22 @@ shape = SubResource("RectangleShape2D_0wfyh")
 texture = ExtResource("1_o5qli")
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1975046369]
-position = Vector2(160, 176)
+position = Vector2(-64, 176)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=938798499]
 shape = SubResource("RectangleShape2D_o5qli")
 
 [node name="Sprite2D" type="Sprite2D" parent="Floor" unique_id=43845833]
+scale = Vector2(-19.98158, -2.0378146)
+texture = ExtResource("4_tefeu")
+
+[node name="Floor2" type="StaticBody2D" parent="Floor" unique_id=512038778]
+position = Vector2(424, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor/Floor2" unique_id=80047924]
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor/Floor2" unique_id=1053720543]
 scale = Vector2(-19.98158, -2.0378146)
 texture = ExtResource("4_tefeu")
 
@@ -72,4 +85,12 @@ position = Vector2(-3.000004, -5.500004)
 scale = Vector2(3.3124993, 3.6875005)
 texture = ExtResource("5_tbgi4")
 
+[node name="DeathZone" type="Area2D" parent="." unique_id=384160909]
+position = Vector2(104, 192)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone" unique_id=141276198]
+position = Vector2(43, 0)
+shape = SubResource("RectangleShape2D_o6xl0")
+
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
+[connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]

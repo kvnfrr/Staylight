@@ -119,13 +119,15 @@ func update_danger(delta: float) -> void:
 		if danger_timer >= danger_time_limit:
 			fail_run()
 
-func fail_run() -> void:
+func fail_run(message := "The dark found you. Press R to retry.") -> void:
 	state = GameState.DRAWING
 	player.controls_enabled = false
 	spirit_index = 0
 	danger_timer = 0.0
 	was_in_danger = false
-	message_label.text = "The dark found you. Press R to redraw."
+	path_finished = false
+	path_end_timer = 0.0
+	message_label.text = message
 
 func update_path_end(delta: float) -> void:
 	path_end_timer += delta
@@ -161,3 +163,7 @@ func reset_run() -> void:
 	path_end_timer = 0.0
 
 	message_label.text = "Draw the light's path."
+
+func _on_death_zone_body_entered(body: Node2D) -> void:
+	if body == player and state == GameState.RUNNING:
+		fail_run("You fell. Press R to retry.")
