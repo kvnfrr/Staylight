@@ -11,6 +11,10 @@ var state := GameState.DRAWING
 var path_points: Array[Vector2] = []
 var min_point_distance := 8.0
 
+var path_finished := false
+var path_end_timer := 0.0
+var path_end_grace_time := 3.0
+
 var spirit_index := 0
 var spirit_speed := 120.0
 
@@ -45,8 +49,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	if state == GameState.RUNNING:
-		move_spirit(delta)
-		update_danger(delta)
+		if path_finished:
+			update_path_end(delta)
+		else:
+			move_spirit(delta)
+			update_danger(delta)
 
 func add_path_point(pos: Vector2) -> void:
 	if path_points.is_empty() or path_points[-1].distance_to(pos) >= min_point_distance:
@@ -66,11 +73,14 @@ func start_run() -> void:
 	danger_timer = 0.0
 	was_in_danger = false
 	message_label.text = "Follow the light."
+	path_finished = false
+	path_end_timer = 0.0
 
 func move_spirit(delta: float) -> void:
 	if spirit_index >= path_points.size():
-		state = GameState.DRAWING
-		player.controls_enabled = false
+		path_finished = true
+		path_end_timer = 0.0
+		message_label.text = "The light is fading..."
 		return
 
 	var target := path_points[spirit_index]
@@ -115,5 +125,9 @@ func fail_run() -> void:
 	danger_timer = 0.0
 	was_in_danger = false
 	message_label.text = "The dark found you. Press R to redraw."
-	
-	
+
+func update_path_end(delta: float) -> void:
+	path_end_timer += delta
+
+	if path_end_timer >= path_end_grace_time:
+		fail_run()
