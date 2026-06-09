@@ -15,6 +15,9 @@ var path_finished := false
 var path_end_timer := 0.0
 var path_end_grace_time := 3.0
 
+var player_spawn_position: Vector2
+var spirit_spawn_position: Vector2
+
 var spirit_index := 0
 var spirit_speed := 120.0
 
@@ -27,7 +30,10 @@ var danger_time_limit := 2.0
 var was_in_danger := false
 
 func _ready() -> void:
+	player_spawn_position = player.global_position
+	spirit_spawn_position = spirit.global_position
 	player.controls_enabled = false
+	message_label.text = "Draw the light's path."
 
 func _unhandled_input(event: InputEvent) -> void:
 	if state != GameState.DRAWING:
@@ -42,7 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			add_path_point(get_global_mouse_position())
 
 	if Input.is_action_just_pressed("clear_path"):
-		clear_path()
+		reset_run()
 
 	if Input.is_action_just_pressed("start_run") and path_points.size() > 1:
 		start_run()
@@ -59,11 +65,6 @@ func add_path_point(pos: Vector2) -> void:
 	if path_points.is_empty() or path_points[-1].distance_to(pos) >= min_point_distance:
 		path_points.append(pos)
 		path_line.add_point(pos)
-
-func clear_path() -> void:
-	path_points.clear()
-	path_line.clear_points()
-	message_label.text = "Draw the light's path."
 
 func start_run() -> void:
 	state = GameState.RUNNING
@@ -132,7 +133,6 @@ func update_path_end(delta: float) -> void:
 	if path_end_timer >= path_end_grace_time:
 		fail_run()
 
-
 func _on_exit_body_entered(body: Node2D) -> void:
 		if body == player and state == GameState.RUNNING:
 			win_run()
@@ -141,3 +141,23 @@ func win_run() -> void:
 	state = GameState.WON
 	player.controls_enabled = false
 	message_label.text = "You made it."
+
+func reset_run() -> void:
+	state = GameState.DRAWING
+
+	player.global_position = player_spawn_position
+	player.velocity = Vector2.ZERO
+	player.controls_enabled = false
+
+	spirit.global_position = spirit_spawn_position
+	spirit_index = 0
+
+	path_points.clear()
+	path_line.clear_points()
+
+	danger_timer = 0.0
+	was_in_danger = false
+	path_finished = false
+	path_end_timer = 0.0
+
+	message_label.text = "Draw the light's path."
