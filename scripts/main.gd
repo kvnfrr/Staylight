@@ -5,6 +5,7 @@ enum GameState { DRAWING, RUNNING }
 @onready var path_line: Line2D = $PathLine
 @onready var spirit: Area2D = $Spirit
 @onready var player: CharacterBody2D = $Player
+@onready var message_label: Label = $UI/MessageLabel
 
 var state := GameState.DRAWING
 var path_points: Array[Vector2] = []
@@ -12,6 +13,14 @@ var min_point_distance := 8.0
 
 var spirit_index := 0
 var spirit_speed := 120.0
+
+var safe_distance := 140.0
+var uneasy_distance := 220.0
+var danger_distance := 300.0
+
+var danger_timer := 0.0
+var danger_time_limit := 2.0
+var was_in_danger := false
 
 func _ready() -> void:
 	player.controls_enabled = false
@@ -37,6 +46,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if state == GameState.RUNNING:
 		move_spirit(delta)
+		update_danger(delta)
 
 func add_path_point(pos: Vector2) -> void:
 	if path_points.is_empty() or path_points[-1].distance_to(pos) >= min_point_distance:
@@ -46,12 +56,16 @@ func add_path_point(pos: Vector2) -> void:
 func clear_path() -> void:
 	path_points.clear()
 	path_line.clear_points()
+	message_label.text = "Draw the light's path."
 
 func start_run() -> void:
 	state = GameState.RUNNING
 	spirit.global_position = path_points[0]
 	spirit_index = 1
 	player.controls_enabled = true
+	danger_timer = 0.0
+	was_in_danger = false
+	message_label.text = "Follow the light."
 
 func move_spirit(delta: float) -> void:
 	if spirit_index >= path_points.size():
@@ -64,3 +78,42 @@ func move_spirit(delta: float) -> void:
 
 	if spirit.global_position.distance_to(target) < 2.0:
 		spirit_index += 1
+
+func update_danger(delta: float) -> void:
+	var distance := player.global_position.distance_to(spirit.global_position)
+
+	if distance < safe_distance:
+		danger_timer = 0.0
+
+		if was_in_danger:
+			message_label.text = "The sounds begin to fade..."
+			was_in_danger = false
+		else:
+			message_label.text = ""
+
+	elif distance < uneasy_distance:
+		danger_timer = 0.0
+		message_label.text = "You don't feel safe..."
+
+	elif distance < danger_distance:
+		danger_timer = 0.0
+		was_in_danger = true
+		message_label.text = "You hear something in the dark..."
+
+	else:
+		was_in_danger = true
+		danger_timer += delta
+		message_label.text = "Run."
+
+		if danger_timer >= danger_time_limit:
+			fail_run()
+
+func fail_run() -> void:
+	state = GameState.DRAWING
+	player.controls_enabled = false
+	spirit_index = 0
+	danger_timer = 0.0
+	was_in_danger = false
+	message_label.text = "The dark found you. Press R to redraw."
+	
+	
