@@ -1,6 +1,6 @@
 extends Node2D
 
-enum GameState { DRAWING, RUNNING }
+enum GameState { DRAWING, RUNNING, WON }
 
 @onready var path_line: Line2D = $PathLine
 @onready var spirit: Area2D = $Spirit
@@ -131,3 +131,13 @@ func update_path_end(delta: float) -> void:
 
 	if path_end_timer >= path_end_grace_time:
 		fail_run()
+
+
+func _on_exit_body_entered(body: Node2D) -> void:
+		if body == player and state == GameState.RUNNING:
+			win_run()
+
+func win_run() -> void:
+	state = GameState.WON
+	player.controls_enabled = false
+	message_label.text = "You made it."

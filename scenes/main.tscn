@@ -4,12 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://c31xbyhrqexc8" path="res://assets/player.png" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c7xm8d3j5bus1" path="res://scripts/main.gd" id="1_sugp2"]
 [ext_resource type="Texture2D" uid="uid://y68pa7p8jydv" path="res://assets/spirit.png" id="3_sugp2"]
+[ext_resource type="Texture2D" uid="uid://cdr54eg5au6i7" path="res://assets/exit.png" id="5_tbgi4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(18, 45)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o5qli"]
 size = Vector2(1000, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tefeu"]
+size = Vector2(41, 54)
 
 [node name="Main" type="Node2D" unique_id=52698365]
 script = ExtResource("1_sugp2")
@@ -53,3 +57,16 @@ offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 43.0
 text = "Draw the light's path."
+
+[node name="Exit" type="Area2D" parent="." unique_id=286935097]
+position = Vector2(291, 227)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1927111711]
+shape = SubResource("RectangleShape2D_tefeu")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit" unique_id=1947999588]
+position = Vector2(0, -2)
+scale = Vector2(2.9999998, 3.625)
+texture = ExtResource("5_tbgi4")
+
+[connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
