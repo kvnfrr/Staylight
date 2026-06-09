@@ -29,6 +29,9 @@ var danger_timer := 0.0
 var danger_time_limit := 2.0
 var was_in_danger := false
 
+var is_drawing_path := false
+var spirit_start_radius := 16.0
+
 func _ready() -> void:
 	player_spawn_position = player.global_position
 	spirit_spawn_position = spirit.global_position
@@ -36,21 +39,27 @@ func _ready() -> void:
 	message_label.text = "Draw the light's path."
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("clear_path"):
+		reset_run()
+		return
+
 	if state != GameState.DRAWING:
 		return
 
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			add_path_point(get_global_mouse_position())
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var mouse_pos := get_global_mouse_position()
 
-	if event is InputEventMouseMotion:
-		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			add_path_point(get_global_mouse_position())
+			if mouse_pos.distance_to(spirit.global_position) <= spirit_start_radius:
+				begin_new_path()
+		else:
+			is_drawing_path = false
 
-	if Input.is_action_just_pressed("clear_path"):
-		reset_run()
+	if event is InputEventMouseMotion and is_drawing_path:
+		add_path_point(get_global_mouse_position())
 
 	if Input.is_action_just_pressed("start_run") and path_points.size() > 1:
+		is_drawing_path = false
 		start_run()
 
 func _process(delta: float) -> void:
@@ -65,6 +74,14 @@ func add_path_point(pos: Vector2) -> void:
 	if path_points.is_empty() or path_points[-1].distance_to(pos) >= min_point_distance:
 		path_points.append(pos)
 		path_line.add_point(pos)
+
+func begin_new_path() -> void:
+	path_points.clear()
+	path_line.clear_points()
+
+	is_drawing_path = true
+
+	add_path_point(spirit.global_position)
 
 func start_run() -> void:
 	state = GameState.RUNNING
