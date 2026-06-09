@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://y68pa7p8jydv" path="res://assets/spirit.png" id="3_sugp2"]
 [ext_resource type="Texture2D" uid="uid://ll26dbopbktr" path="res://assets/ground_tile.png" id="4_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cdr54eg5au6i7" path="res://assets/exit.png" id="5_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://0dgoa3240u2n" path="res://assets/light_circle.png" id="6_o6xl0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(6, 15)
@@ -63,6 +64,9 @@ position = Vector2(267, 93)
 
 [node name="Sprite2D" type="Sprite2D" parent="Spirit" unique_id=36448746]
 texture = ExtResource("3_sugp2")
+
+[node name="PointLight2D" type="PointLight2D" parent="Spirit" unique_id=760422214]
+texture = ExtResource("6_o6xl0")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=214130784]
 
