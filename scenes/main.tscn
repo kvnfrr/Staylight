@@ -116,5 +116,13 @@ texture = ExtResource("4_tefeu")
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1017923965]
 color = Color(0.019607844, 0.019607844, 0.019607844, 1)
 
+[node name="Background" type="ColorRect" parent="." unique_id=1284068081]
+visibility_layer = 2
+z_index = -1
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+color = Color(0.05882353, 0.05882353, 0.05882353, 1)
+
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
 [connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]
