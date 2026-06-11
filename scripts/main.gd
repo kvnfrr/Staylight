@@ -32,6 +32,9 @@ var was_in_danger := false
 var is_drawing_path := false
 var spirit_start_radius := 24.0
 
+var max_path_length := 700.0
+var current_path_length := 0.0
+
 func _ready() -> void:
 	player_spawn_position = player.global_position
 	spirit_spawn_position = spirit.global_position
@@ -71,17 +74,37 @@ func _process(delta: float) -> void:
 			update_danger(delta)
 
 func add_path_point(pos: Vector2) -> void:
-	if path_points.is_empty() or path_points[-1].distance_to(pos) >= min_point_distance:
+	if path_points.is_empty():
 		path_points.append(pos)
 		path_line.add_point(pos)
+		return
+
+	var last_point := path_points[-1]
+	var segment_length := last_point.distance_to(pos)
+
+	if segment_length < min_point_distance:
+		return
+
+	if current_path_length + segment_length > max_path_length:
+		is_drawing_path = false
+		message_label.text = "The light cannot stretch further."
+		return
+
+	current_path_length += segment_length
+	path_points.append(pos)
+	path_line.add_point(pos)
+
+	message_label.text = "Light remaining: %s%%" % get_light_remaining_percent()
 
 func begin_new_path() -> void:
 	path_points.clear()
 	path_line.clear_points()
 
+	current_path_length = 0.0
 	is_drawing_path = true
 
 	add_path_point(spirit.global_position)
+	message_label.text = "Light remaining: 100%"
 
 func start_run() -> void:
 	state = GameState.RUNNING
@@ -180,7 +203,15 @@ func reset_run() -> void:
 	path_end_timer = 0.0
 
 	message_label.text = "Draw the light's path."
+	
+	current_path_length = 0.0
+	is_drawing_path = false
 
 func _on_death_zone_body_entered(body: Node2D) -> void:
 	if body == player and state == GameState.RUNNING:
 		fail_run("You fell. Press R to retry.")
+
+func get_light_remaining_percent() -> int:
+	var remaining := 1.0 - (current_path_length / max_path_length)
+	remaining = clamp(remaining, 0.0, 1.0)
+	return int(round(remaining * 100.0))
