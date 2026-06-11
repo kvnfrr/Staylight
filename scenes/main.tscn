@@ -57,6 +57,8 @@ position = Vector2(24, 96)
 texture = ExtResource("3_sugp2")
 
 [node name="PointLight2D" type="PointLight2D" parent="Spirit" unique_id=760422214]
+scale = Vector2(3.5, 3.5)
+energy = 1.5
 texture = ExtResource("6_o6xl0")
 texture_scale = 2.0
 
@@ -89,17 +91,6 @@ scale = Vector2(4.0789533, 0.7283146)
 position = Vector2(43, 0)
 shape = SubResource("RectangleShape2D_o6xl0")
 
-[node name="DarknessLayer" type="CanvasLayer" parent="." unique_id=2026907743]
-
-[node name="Darkness" type="ColorRect" parent="DarknessLayer" unique_id=2050813697]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 0.33333334)
-
 [node name="Floor2" type="StaticBody2D" parent="." unique_id=512038778]
 position = Vector2(296, 176.00002)
 scale = Vector2(0.5990317, 0.974321)
@@ -121,6 +112,9 @@ shape = SubResource("RectangleShape2D_o5qli")
 [node name="Sprite2D" type="Sprite2D" parent="Floor3" unique_id=106785393]
 scale = Vector2(-19.98158, -2.0378146)
 texture = ExtResource("4_tefeu")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1017923965]
+color = Color(0.019607844, 0.019607844, 0.019607844, 1)
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
 [connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]
