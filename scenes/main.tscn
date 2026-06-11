@@ -24,7 +24,7 @@ size = Vector2(106, 20)
 script = ExtResource("1_sugp2")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=742452076]
-position = Vector2(247, 122.000015)
+position = Vector2(48, 136)
 scale = Vector2(3, 3)
 script = ExtResource("1_0wfyh")
 
@@ -36,7 +36,8 @@ shape = SubResource("RectangleShape2D_0wfyh")
 texture = ExtResource("1_o5qli")
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=1975046369]
-position = Vector2(-64, 176)
+position = Vector2(32, 176.00002)
+scale = Vector2(0.4009608, 0.9446346)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=938798499]
 shape = SubResource("RectangleShape2D_o5qli")
@@ -45,28 +46,19 @@ shape = SubResource("RectangleShape2D_o5qli")
 scale = Vector2(-19.98158, -2.0378146)
 texture = ExtResource("4_tefeu")
 
-[node name="Floor2" type="StaticBody2D" parent="Floor" unique_id=512038778]
-position = Vector2(424, 0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor/Floor2" unique_id=80047924]
-shape = SubResource("RectangleShape2D_o5qli")
-
-[node name="Sprite2D" type="Sprite2D" parent="Floor/Floor2" unique_id=1053720543]
-scale = Vector2(-19.98158, -2.0378146)
-texture = ExtResource("4_tefeu")
-
 [node name="PathLine" type="Line2D" parent="." unique_id=1432185608]
 width = 4.0
 default_color = Color(0.06666667, 1, 0, 1)
 
 [node name="Spirit" type="Area2D" parent="." unique_id=1662889771]
-position = Vector2(267, 93)
+position = Vector2(24, 96)
 
 [node name="Sprite2D" type="Sprite2D" parent="Spirit" unique_id=36448746]
 texture = ExtResource("3_sugp2")
 
 [node name="PointLight2D" type="PointLight2D" parent="Spirit" unique_id=760422214]
 texture = ExtResource("6_o6xl0")
+texture_scale = 2.0
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=214130784]
 
@@ -78,7 +70,7 @@ offset_bottom = 43.0
 text = "Draw the light's path."
 
 [node name="Exit" type="Area2D" parent="." unique_id=286935097]
-position = Vector2(40, 136)
+position = Vector2(616, 136)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit" unique_id=1927111711]
 position = Vector2(-3, -1.5)
@@ -90,7 +82,8 @@ scale = Vector2(3.3124993, 3.6875005)
 texture = ExtResource("5_tbgi4")
 
 [node name="DeathZone" type="Area2D" parent="." unique_id=384160909]
-position = Vector2(104, 192)
+position = Vector2(136, 192.00002)
+scale = Vector2(4.0789533, 0.7283146)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone" unique_id=141276198]
 position = Vector2(43, 0)
@@ -106,6 +99,28 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.33333334)
+
+[node name="Floor2" type="StaticBody2D" parent="." unique_id=512038778]
+position = Vector2(296, 176.00002)
+scale = Vector2(0.5990317, 0.974321)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2" unique_id=80047924]
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2" unique_id=1053720543]
+scale = Vector2(-19.98158, -2.0378146)
+texture = ExtResource("4_tefeu")
+
+[node name="Floor3" type="StaticBody2D" parent="." unique_id=1758786793]
+position = Vector2(624, 176.00002)
+scale = Vector2(0.5990317, 0.974321)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor3" unique_id=2096453489]
+shape = SubResource("RectangleShape2D_o5qli")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor3" unique_id=106785393]
+scale = Vector2(-19.98158, -2.0378146)
+texture = ExtResource("4_tefeu")
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
 [connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]
