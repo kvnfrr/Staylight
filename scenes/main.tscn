@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ll26dbopbktr" path="res://assets/ground_tile.png" id="4_tefeu"]
 [ext_resource type="Texture2D" uid="uid://cdr54eg5au6i7" path="res://assets/exit.png" id="5_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://0dgoa3240u2n" path="res://assets/light_circle.png" id="6_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://b00q8qm4k0on2" path="res://assets/torch.png" id="8_tipki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0wfyh"]
 size = Vector2(6, 15)
@@ -58,9 +59,9 @@ texture = ExtResource("3_sugp2")
 
 [node name="PointLight2D" type="PointLight2D" parent="Spirit" unique_id=760422214]
 scale = Vector2(3.5, 3.5)
-energy = 1.5
+energy = 0.8
 texture = ExtResource("6_o6xl0")
-texture_scale = 2.0
+texture_scale = 3.0
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=214130784]
 
@@ -118,11 +119,35 @@ color = Color(0.019607844, 0.019607844, 0.019607844, 1)
 
 [node name="Background" type="ColorRect" parent="." unique_id=1284068081]
 visibility_layer = 2
-z_index = -1
+z_index = -100
 offset_right = 640.0
 offset_bottom = 360.0
 mouse_filter = 2
 color = Color(0.05882353, 0.05882353, 0.05882353, 1)
+
+[node name="TorchStart" type="Node2D" parent="." unique_id=1982348870]
+position = Vector2(24, 120)
+
+[node name="Sprite2D" type="Sprite2D" parent="TorchStart" unique_id=424925918]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_tipki")
+
+[node name="PointLight2D" type="PointLight2D" parent="TorchStart" unique_id=1551619280]
+energy = 0.4
+texture = ExtResource("6_o6xl0")
+texture_scale = 1.5
+
+[node name="TorchExit" type="Node2D" parent="." unique_id=144257387]
+position = Vector2(536, 120)
+
+[node name="Sprite2D" type="Sprite2D" parent="TorchExit" unique_id=284956243]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_tipki")
+
+[node name="PointLight2D" type="PointLight2D" parent="TorchExit" unique_id=1516470039]
+energy = 0.4
+texture = ExtResource("6_o6xl0")
+texture_scale = 1.5
 
 [connection signal="body_entered" from="Exit" to="." method="_on_exit_body_entered"]
 [connection signal="body_entered" from="DeathZone" to="." method="_on_death_zone_body_entered"]
