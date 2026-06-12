@@ -36,8 +36,12 @@ var max_path_length := 700.0
 var current_path_length := 0.0
 
 func _ready() -> void:
-	player_spawn_position = player.global_position
-	spirit_spawn_position = spirit.global_position
+	set_spawn_positions_from_level()
+	connect_level_signals()
+
+	player.global_position = player_spawn_position
+	spirit.global_position = spirit_spawn_position
+
 	player.controls_enabled = false
 	message_label.text = "Draw the light's path."
 
@@ -206,6 +210,9 @@ func reset_run() -> void:
 	
 	current_path_length = 0.0
 	is_drawing_path = false
+	
+	player.global_position = player_spawn_position
+	spirit.global_position = spirit_spawn_position
 
 func _on_death_zone_body_entered(body: Node2D) -> void:
 	if body == player and state == GameState.RUNNING:
@@ -215,3 +222,21 @@ func get_light_remaining_percent() -> int:
 	var remaining := 1.0 - (current_path_length / max_path_length)
 	remaining = clamp(remaining, 0.0, 1.0)
 	return int(round(remaining * 100.0))
+
+func set_spawn_positions_from_level() -> void:
+	var player_spawn := $World.get_node("PlayerSpawn")
+	var spirit_spawn := $World.get_node("SpiritSpawn")
+
+	player_spawn_position = player_spawn.global_position
+	spirit_spawn_position = spirit_spawn.global_position
+	connect_level_signals()
+
+func connect_level_signals() -> void:
+	var exit := $World.get_node("Exit")
+	var death_zone := $World.get_node("DeathZone")
+
+	if not exit.body_entered.is_connected(_on_exit_body_entered):
+		exit.body_entered.connect(_on_exit_body_entered)
+
+	if not death_zone.body_entered.is_connected(_on_death_zone_body_entered):
+		death_zone.body_entered.connect(_on_death_zone_body_entered)
